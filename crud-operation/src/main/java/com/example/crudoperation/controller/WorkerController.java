@@ -1,5 +1,7 @@
 package com.example.crudoperation.controller;
 
+import com.example.crudoperation.BaseResponse.BaseResponse;
+import com.example.crudoperation.DTO.WorkerDTO;
 import com.example.crudoperation.model.Worker;
 import com.example.crudoperation.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,43 +13,30 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/worker")
+@RequestMapping("/workers")
 public class WorkerController {
 
     @Autowired
     private WorkerService workerService;
 
-    @GetMapping("/getall")
+    @GetMapping("/detail")
     public List<Worker> list(){
         return workerService.listAll();
     }
     @PostMapping("/add")
-    public String add(@RequestBody Worker worker){
-        workerService.save(worker);
-        return "New Worker details added...";
+    public BaseResponse display(@RequestBody WorkerDTO workerDTO){
+        return workerService.adddetaill(workerDTO);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Worker> get(@PathVariable Integer id){
-        try{
-            Worker worker=workerService.get(id);
-            return new ResponseEntity<Worker>(worker, HttpStatus.OK);
-    }catch (NoSuchElementException e){
-        return new ResponseEntity<Worker>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/workers/{id}")
+    public Worker findWorkerByID(@PathVariable int id){
+        return workerService.getWorkerByID(id);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Worker> update(@RequestBody Worker worker,@PathVariable Integer id){
-        try {
-            Worker existingWorker=workerService.get(id);
-            workerService.save(worker);
-            return new ResponseEntity<Worker>(worker,HttpStatus.OK);
-        }catch (NoSuchElementException e){
-            return new ResponseEntity<Worker>(HttpStatus.NOT_FOUND);
-        }
+    public BaseResponse updatedetail(@RequestBody WorkerDTO workerDTO){
+        return workerService.updatedetail(workerDTO);
     }
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable Integer id){
-        workerService.delete(id);
-        return "deleted successfully this id : " +id;
+    @DeleteMapping("/delete/{id}")
+    public BaseResponse deletedinfo(@PathVariable int id){
+        return workerService.deletedinfo(id);
     }
 }
