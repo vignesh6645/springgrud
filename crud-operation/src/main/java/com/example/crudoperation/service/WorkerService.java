@@ -26,6 +26,7 @@ public class WorkerService {
         dto.setName(workerDTO.getName());
         dto.setArea(workerDTO.getArea());
         workerRepository.save(dto);
+        baseResponse.setData(dto);
         baseResponse.setStatusCode("200");
         baseResponse.setStatusMsg("success");
         return  baseResponse;
@@ -55,6 +56,7 @@ public class WorkerService {
     public BaseResponse deletedinfo(int id){
         BaseResponse baseResponse = new BaseResponse();
         workerRepository.deleteById(id);
+        baseResponse.setData(id);
         baseResponse.setStatusCode("103");
         baseResponse.setStatusMsg("Worker info deleted successfully..");
         return baseResponse;
